@@ -239,8 +239,8 @@ setup_iptables() {
             iptables -t nat -A OUTPUT -p tcp -m tcp --tcp-flags FIN,SYN,RST,ACK SYN -j REDIRECT --to-ports $trans_port
 
             ## *filter INPUT
-            iptables -I OUTPUT-m state --state NEW,ESTABLISHED,RELATED,INVALID-j ACCEPT
-            iptables -I INPUT -m state --state ESTABLISHED,RELATED-j ACCEPT
+            iptables -A OUTPUT-m state --state NEW,ESTABLISHED,RELATED,INVALID-j ACCEPT
+            iptables -A INPUT -m state --state ESTABLISHED,RELATED-j ACCEPT
             iptables -A INPUT -m state --state ESTABLISHED -j ACCEPT
             iptables -A INPUT -i lo -j ACCEPT
 
