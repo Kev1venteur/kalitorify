@@ -225,6 +225,13 @@ setup_iptables() {
 
             # Allow lan access for hosts in $non_tor
             for lan in $non_tor; do
+                # SSH Accept Rules
+                # Incoming from subnet
+                iptables -A INPUT -p tcp -s $lan --dport 22 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+                iptables -A OUTPUT -p tcp --sport 22 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+                # Outcoming from subnet
+                iptables -A OUTPUT -p tcp --dport 22 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+                iptables -A INPUT -p tcp --sport 22 -m conntrack --ctstate ESTABLISHED -j ACCEPT
                 iptables -t nat -A OUTPUT -d $lan -j RETURN
             done
 
